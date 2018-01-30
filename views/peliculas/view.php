@@ -63,10 +63,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php foreach ($alquileres as $alquiler): ?>
                 <tr>
                     <td><?= Html::a(
-                        Html::encode($alquiler->socio->numero), ['peliculas/view', 'id'=>$alquiler->socio->id]
+                        Html::encode($alquiler->socio->numero), ['socios/view', 'id'=>$alquiler->socio->id]
                     ) ?></td>
                     <td><?= Html::a(
-                        Html::encode($alquiler->socio->nombre), ['peliculas/view', 'id'=>$alquiler->socio->id]
+                        Html::encode($alquiler->socio->nombre), ['socios/view', 'id'=>$alquiler->socio->id]
                     ) ?></td>
                     <td><?= Html::encode(Yii::$app->formatter->asDatetime($alquiler->created_at)) ?></td>
                     <?php $pendiente = $model->getPendiente()->one() ?>
