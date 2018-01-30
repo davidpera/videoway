@@ -27,9 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'socio_id',
+            'socio.nombre',
             'pelicula_id',
-            'created_at',
-            'devolucion',
+            'created_at:datetime',
+            'devolucion:datetime',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
