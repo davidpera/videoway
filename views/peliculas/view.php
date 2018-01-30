@@ -52,14 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ]
     ]) -->
 
-    <?php $pendiente = $model->getPendiente()->one() ?>
-    <?php if (isset($pendiente)): ?>
-        <?= Html::beginForm(['alquileres/devolver', 'numero' => $pendiente->socio->numero], 'post') ?>
-            <?= Html::hiddenInput('id',$pendiente->id) ?>
-            <span>Está sin devolver</span>
-            <?= Html::submitButton('Devolver', ['class' => 'btn-xs btn-danger']) ?>
-        <?= Html::endForm() ?>
-    <?php endif ?>
     <table class="table">
         <thead>
             <th>Número</th>
@@ -67,6 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <th>Fecha de alquiler</th>
         </thead>
         <tbody>
+            <?php $cont = 0 ?>
             <?php foreach ($alquileres as $alquiler): ?>
                 <tr>
                     <td><?= Html::a(
@@ -76,6 +69,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         Html::encode($alquiler->socio->nombre), ['peliculas/view', 'id'=>$alquiler->socio->id]
                     ) ?></td>
                     <td><?= Html::encode(Yii::$app->formatter->asDatetime($alquiler->created_at)) ?></td>
+                    <?php $pendiente = $model->getPendiente()->one() ?>
+                    <?php if ($pendiente->socio->id === $alquiler->socio->id && $cont === 0): ?>
+                        <?= Html::beginForm(['alquileres/devolver', 'numero' => $pendiente->socio->numero], 'post') ?>
+                            <?= Html::hiddenInput('id',$pendiente->id) ?>
+                            <td><?= Html::submitButton('Devolver', ['class' => 'btn-xs btn-danger']) ?></td>
+                        <?= Html::endForm() ?>
+                        <?php $cont += 1 ?>
+                    <?php endif ?>
                 </tr>
             <?php endforeach ?>
         </tbody>
