@@ -70,12 +70,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     ) ?></td>
                     <td><?= Html::encode(Yii::$app->formatter->asDatetime($alquiler->created_at)) ?></td>
                     <?php $pendiente = $model->getPendiente()->one() ?>
-                    <?php if ($pendiente->socio->id === $alquiler->socio->id && $cont === 0): ?>
-                        <?= Html::beginForm(['alquileres/devolver', 'numero' => $pendiente->socio->numero], 'post') ?>
-                            <?= Html::hiddenInput('id',$pendiente->id) ?>
-                            <td><?= Html::submitButton('Devolver', ['class' => 'btn-xs btn-danger']) ?></td>
-                        <?= Html::endForm() ?>
-                        <?php $cont += 1 ?>
+                    <?php if(isset($pendiente)): ?>
+                        <?php if ($pendiente->socio->id === $alquiler->socio->id && $cont === 0): ?>
+                            <?= Html::beginForm(['alquileres/devolver', 'numero' => $pendiente->socio->numero], 'post') ?>
+                                <?= Html::hiddenInput('id',$pendiente->id) ?>
+                                <td><?= Html::submitButton('Devolver', ['class' => 'btn-xs btn-danger']) ?></td>
+                            <?= Html::endForm() ?>
+                            <?php $cont += 1 ?>
+                        <?php endif ?>
                     <?php endif ?>
                 </tr>
             <?php endforeach ?>
