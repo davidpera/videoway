@@ -48,6 +48,11 @@ class Peliculas extends \yii\db\ActiveRecord
         ];
     }
 
+    /*public function getEnlace()
+    {
+
+    }*/
+
     /**
      * Comprueba si una pelicula esta alquilada.
      * @return bool Si esta alquilada o no

@@ -49,6 +49,12 @@ class Socios extends \yii\db\ActiveRecord
             'telefono' => 'Telefono',
         ];
     }
+
+    /*public function getEnlace()
+    {
+
+    }*/
+
     /**
      * @return \yii\db\ActiveQuery
      */
