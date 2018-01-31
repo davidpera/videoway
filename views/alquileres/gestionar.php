@@ -7,9 +7,11 @@ use yii\widgets\ActiveForm;
 /** @var $gestionarPeliculaForm \app\models\GestionarPeliculaForm */
 /** @var $socio \app\models\Socios */
 
-$this->title = 'Gestion';
-$this->params['breadcrumbs'][] = ['label' => 'Socios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Gestion de alquileres';
+$this->params['breadcrumbs'][] = ['label' => 'Gestionar Alquileres', 'url' => ['alquileres/gestionar']];
+if (isset($socio)):
+    $this->params['breadcrumbs'][] = $socio->nombre;
+endif;
 ?>
 
 <div class="row">
@@ -54,10 +56,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 ) ?></h4>
 
                 <?php if ($pelicula->estaAlquilada): ?>
-                    <?php $pendiente = $pelicula->getPendiente()->one() ?>
+                    <?php $pendiente = $pelicula->getPendiente() ?>
                     <h4>Película ya alquilada por
                         <?= Html::a(
-                            Html::encode($pendiente->socio->nombre), ['alquileres/gestionar', 'numero'=>$pendiente->socio->numero]
+                            Html::encode($pendiente->socio->nombre), ['socios/view', 'id'=>$pendiente->socio->id]
                         ) ?>
                     </h4>
                     <?= Html::beginForm(['alquileres/devolver', 'numero' => $pendiente->socio->numero], 'post') ?>

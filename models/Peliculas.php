@@ -66,7 +66,8 @@ class Peliculas extends \yii\db\ActiveRecord
     {
         return $this->getAlquileres()
             ->where(['devolucion' => null])
-            ->orderBy(['created_at' => SORT_DESC]);
+            ->orderBy(['created_at' => SORT_DESC])
+            ->one();
     }
 
     /**

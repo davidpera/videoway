@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         Html::encode($alquiler->socio->nombre), ['socios/view', 'id'=>$alquiler->socio->id]
                     ) ?></td>
                     <td><?= Yii::$app->formatter->asDatetime($alquiler->created_at) ?></td>
-                    <?php $pendiente = $model->getPendiente()->one() ?>
+                    <?php $pendiente = $model->getPendiente() ?>
                     <?php if(isset($pendiente)): ?>
                         <?php if ($pendiente->socio->id === $alquiler->socio->id && $cont === 0): ?>
                             <?= Html::beginForm(['alquileres/devolver', 'numero' => $pendiente->socio->numero], 'post') ?>
