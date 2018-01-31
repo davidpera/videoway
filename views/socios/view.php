@@ -56,16 +56,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td><?= Html::a(
                         Html::encode($alquiler->pelicula->titulo), ['peliculas/view', 'id'=>$alquiler->pelicula->id]
                     ) ?></td>
-                    <td><?= Html::encode(Yii::$app->formatter->asDatetime($alquiler->created_at)) ?></td>
-                    <?php $pendientes = $alquiler->socio->getPendientes()->with('pelicula') ?>
-                    <?php foreach ($pendientes->each() as $pendiente): ?>
-                        <?php if ($pendiente->pelicula->id === $alquiler->pelicula->id): ?>
-                            <?= Html::beginForm(['alquileres/devolver', 'numero' => $alquiler->socio->numero], 'post') ?>
-                                <?= Html::hiddenInput('id',$pendiente->id) ?>
-                                <td><?= Html::submitButton('Devolver', ['class' => 'btn-xs btn-danger']) ?></td>
+                    <td><?= Yii::$app->formatter->asDatetime($alquiler->created_at) ?></td>
+                    <td>
+                        <?php if ($alquiler->estaDevuelto): ?>
+                            <?= Yii::$app->formatter->asDatetime($alquiler->devolucion) ?>
+                        <?php else: ?>
+                            <?= Html::beginForm(['alquileres/devolver', 'numero' => $model->numero])?>
+                                <?= Html::hiddenInput('id',$alquiler->id) ?>
+                                <?= Html::submitButton('Devolver', ['class' => 'btn-xs btn-danger']) ?>
                             <?= Html::endForm() ?>
                         <?php endif ?>
-                    <?php endforeach ?>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </tbody>

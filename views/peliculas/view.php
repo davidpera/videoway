@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td><?= Html::a(
                         Html::encode($alquiler->socio->nombre), ['socios/view', 'id'=>$alquiler->socio->id]
                     ) ?></td>
-                    <td><?= Html::encode(Yii::$app->formatter->asDatetime($alquiler->created_at)) ?></td>
+                    <td><?= Yii::$app->formatter->asDatetime($alquiler->created_at) ?></td>
                     <?php $pendiente = $model->getPendiente()->one() ?>
                     <?php if(isset($pendiente)): ?>
                         <?php if ($pendiente->socio->id === $alquiler->socio->id && $cont === 0): ?>

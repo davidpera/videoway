@@ -98,9 +98,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             <tr>
                                 <td><?= Html::encode($alquiler->pelicula->codigo) ?></td>
                                 <td><?= Html::encode($alquiler->pelicula->titulo) ?></td>
-                                <td><?= Html::encode(
+                                <td><?=
                                     Yii::$app->formatter->asDatetime($alquiler->created_at)
-                                ) ?></td>
+                                 ?></td>
                                 <?= Html::beginForm(['devolver', 'numero' => $socio->numero], 'post') ?>
                                     <?= Html::hiddenInput('id',$alquiler->id) ?>
                                     <td><?= Html::submitButton('Devolver', ['class' => 'btn-xs btn-danger']) ?></td>
