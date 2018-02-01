@@ -1,22 +1,21 @@
 <?php
 use app\models\Peliculas;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 
 /** @var $this \yii\web\Link */
-/** @var $pagination \yii\data\Pagination*/
-/** @var $sort \yii\data\Sort*/
-/** @var $peliculas Peliculas[] */
+/** @var $dataProvider ActiveDataProvider*/
 ?>
 
 <table class="table table-stripped">
     <thead>
-        <th><?= $sort->link('codigo') ?></th>
-        <th><?= $sort->link('titulo') ?></th>
-        <th><?= $sort->link('precio_alq') ?></th>
+        <th><?= $dataProvider->sort->link('codigo') ?></th>
+        <th><?= $dataProvider->sort->link('titulo') ?></th>
+        <th><?= $dataProvider->sort->link('precio_alq') ?></th>
     </thead>
     <tbody>
-        <?php foreach ($peliculas as $pelicula): ?>
+        <?php foreach ($dataProvider->getModels() as $pelicula): ?>
             <tr>
                 <td><?= Html::encode($pelicula->codigo)?></td>
                 <td><?= Html::encode($pelicula->titulo)?></td>
@@ -26,4 +25,4 @@ use yii\widgets\LinkPager;
     </tbody>
 </table>
 
-<?= LinkPager::widget(['pagination' => $pagination]) ?>
+<?= LinkPager::widget(['pagination' => $dataProvider->pagination]) ?>
