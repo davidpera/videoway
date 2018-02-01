@@ -39,7 +39,7 @@ class GestionarSocioForm extends Model
                         ])
                         ->one();
                     if ($socio !== null) {
-                        $valor = $socio->numero;
+                        $value = $socio->numero;
                     }
                 }
                 return $value;
