@@ -42,16 +42,16 @@ class PeliculasController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Peliculas::find(),
-            'pagination' => [
-                'pageSize' => 2,
-            ],
-            'sort' => [
-                'attributes' => [
-                    'codigo' => ['label' => 'Código'],
-                    'titulo' => ['label' => 'Título'],
-                    'precio_alq' => ['label' => 'Precio de alquiler'],
-                ],
-            ],
+            // 'pagination' => [
+            //     'pageSize' => 2,
+            // ],
+            // 'sort' => [
+            //     'attributes' => [
+            //         'codigo' => ['label' => 'Código'],
+            //         'titulo' => ['label' => 'Título'],
+            //         'precio_alq' => ['label' => 'Precio de alquiler'],
+            //     ],
+            // ],
         ]);
 
         return $this->render('listado', [
