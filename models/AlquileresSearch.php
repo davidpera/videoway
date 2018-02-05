@@ -2,10 +2,8 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Alquileres;
 
 /**
  * AlquileresSearch represents the model behind the search form of `app\models\Alquileres`.
@@ -33,7 +31,7 @@ class AlquileresSearch extends Alquileres
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
@@ -41,7 +39,7 @@ class AlquileresSearch extends Alquileres
      */
     public function search($params)
     {
-        $query = Alquileres::find();
+        $query = Alquileres::find()->joinWith('pelicula');
 
         // add conditions that should always apply here
 
@@ -57,6 +55,11 @@ class AlquileresSearch extends Alquileres
             return $dataProvider;
         }
 
+        $dataProvider->sort->attributes['pelicula.titulo'] = [
+            'asc' => ['peliculas.titulo' => SORT_ASC],
+            'desc' => ['peliculas.titulo' => SORT_DESC],
+        ];
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -64,6 +67,10 @@ class AlquileresSearch extends Alquileres
             'pelicula_id' => $this->pelicula_id,
             'created_at' => $this->created_at,
             'devolucion' => $this->devolucion,
+        ]);
+
+        $query->andFilterWhere([
+            'ilike', 'peliculas.titulo', $this->getAttribute('pelicula.titulo'),
         ]);
 
         return $dataProvider;

@@ -9,6 +9,7 @@ use app\models\GestionarSocioForm;
 use app\models\Peliculas;
 use app\models\Socios;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
@@ -44,6 +45,28 @@ class AlquileresController extends Controller
             return parent::beforeAction($action);
         }
     }*/
+
+    public function actionListado()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Alquileres::find()
+            ->joinWith(['socio', 'pelicula']),
+        ]);
+
+        $dataProvider->sort->attributes['socio.numero'] = [
+            'asc' => ['socios.numero' => SORT_ASC],
+            'desc' => ['socios.numero' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['pelicula.codigo'] = [
+            'asc' => ['peliculas.codigo' => SORT_ASC],
+            'desc' => ['peliculas.codigo' => SORT_DESC],
+        ];
+
+        return $this->render('listado', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     /**
      * Gestionara el alquiler y devolucion de una pelicula enuna sola accion.
@@ -98,11 +121,13 @@ class AlquileresController extends Controller
 
         $alquiler->devolucion = date('Y-m-d H:i:s');
         $alquiler->save();
+
         $url = Yii::$app->session->get(
             'rutaVuelta',
             ['alquileres/gestionar', 'numero' => $numero]
         );
         Yii::$app->session->remove('rutaVuelta');
+
         return $this->redirect($url);
     }
 

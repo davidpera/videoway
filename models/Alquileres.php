@@ -16,6 +16,12 @@ namespace app\models;
  */
 class Alquileres extends \yii\db\ActiveRecord
 {
+    // /**
+    //  * Escenario usado cuando se crea una nueva instancia.
+    //  * @var string
+    //  */
+    // public const ESCENARIO_CREAR = 'crear';
+
     /**
      * @inheritdoc
      */
@@ -42,8 +48,13 @@ class Alquileres extends \yii\db\ActiveRecord
                     $this->addError($attribute, 'La película ya está alquilada');
                 }
             }, 'when' => function ($model, $attribute) {
-                return  $model->id === null;
+                return $model->id === null;
             }],
+            // [['pelicula_id'], function ($attribute, $params, $validator) {
+            //     if (Peliculas::findOne($this->pelicula_id)->estaAlquilada) {
+            //         $this->addError($attribute, 'La película ya está alquilada');
+            //     }
+            // }, 'on' => self::ESCENARIO_CREAR],
         ];
     }
 
