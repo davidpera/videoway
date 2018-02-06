@@ -61,24 +61,27 @@ $this->params['breadcrumbs'][] = $this->title;
         <tbody>
             <?php $cont = 0 ?>
             <?php foreach ($alquileres as $alquiler): ?>
-                <tr>
+                <tr><?php if (isset($alquiler->socio)):?>
                     <td><?= Html::a(
                         Html::encode($alquiler->socio->numero), ['socios/view', 'id'=>$alquiler->socio->id]
                     ) ?></td>
-                    <td><?= Html::a(
+                    <td><?=Html::a(
                         Html::encode($alquiler->socio->nombre), ['socios/view', 'id'=>$alquiler->socio->id]
-                    ) ?></td>
-                    <td><?= Yii::$app->formatter->asDatetime($alquiler->created_at) ?></td>
-                    <?php $pendiente = $model->getPendiente() ?>
-                    <?php if(isset($pendiente)): ?>
-                        <?php if ($pendiente->socio->id === $alquiler->socio->id && $cont === 0): ?>
-                            <?= Html::beginForm(['alquileres/devolver', 'numero' => $pendiente->socio->numero], 'post') ?>
-                                <?= Html::hiddenInput('id',$pendiente->id) ?>
-                                <td><?= Html::submitButton('Devolver', ['class' => 'btn-xs btn-danger']) ?></td>
+                    )?></td>
+                <?php else:?>
+                    <td>No se sabe</td>
+                    <td>No se sabe</td>
+                <?php endif?>
+                    <td>
+                        <?php if ($alquiler->estaDevuelto): ?>
+                            <?= Yii::$app->formatter->asDatetime($alquiler->devolucion) ?>
+                        <?php else: ?>
+                            <?= Html::beginForm(['alquileres/devolver', 'numero' => $alquiler->socio->numero])?>
+                                <?= Html::hiddenInput('id',$alquiler->id) ?>
+                                <?= Html::submitButton('Devolver', ['class' => 'btn-xs btn-danger']) ?>
                             <?= Html::endForm() ?>
-                            <?php $cont += 1 ?>
                         <?php endif ?>
-                    <?php endif ?>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </tbody>
