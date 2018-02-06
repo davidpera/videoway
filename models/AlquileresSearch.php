@@ -17,8 +17,13 @@ class AlquileresSearch extends Alquileres
     {
         return [
             [['id', 'socio_id', 'pelicula_id'], 'integer'],
-            [['created_at', 'devolucion'], 'safe'],
+            [['created_at', 'devolucion', 'pelicula.titulo'], 'safe'],
         ];
+    }
+
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['pelicula.titulo']);
     }
 
     /**
@@ -70,7 +75,9 @@ class AlquileresSearch extends Alquileres
         ]);
 
         $query->andFilterWhere([
-            'ilike', 'peliculas.titulo', $this->getAttribute('pelicula.titulo'),
+            'ilike',
+            'peliculas.titulo',
+            $this->getAttribute('pelicula.titulo'),
         ]);
 
         return $dataProvider;
