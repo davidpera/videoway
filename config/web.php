@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Url;
+use kartik\datecontrol\Module;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -18,8 +18,8 @@ $config = [
     'components' => [
         'formatter' => [
             'timeZone' => 'Europe/Madrid',
-            'datetimeFormat' => 'php:d-m-Y H:i:s',
-            'dateFormat' => 'php:d-m-Y',
+            'datetimeFormat' => $params['dateTimeFormat'],
+            'dateFormat' => $params['dateFormat'],
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -54,14 +54,23 @@ $config = [
         */
     ],
     'params' => $params,
-    /*'on beforeAction' => function ($event) {
-        $action = $event->action->id;
-        $controller = $event->action->controller->id;
-        if ("$controller/$action" !== 'alquileres/devolver' &&
-            "$controller/$action" !== 'default/toolbar') {
-            Yii::$app->session->set('rutaVuelta', Url::to());
-        }
-    },*/
+    'modules' => [
+       'datecontrol' => [
+            'class' => '\kartik\datecontrol\Module',
+            'displaySettings' => [
+                Module::FORMAT_DATE => $params['dateFormat'],
+                Module::FORMAT_TIME => $params['timeFormat'],
+                Module::FORMAT_DATETIME => $params['dateTimeFormat'],
+            ],
+            'saveSettings' => [
+                Module::FORMAT_DATE => 'php:Y-m-d',
+                Module::FORMAT_TIME => 'php:H:i:s',
+                Module::FORMAT_DATETIME => 'php:Y-m-d H:i:s',
+            ],
+            'displayTimezone' => 'Europe/Madrid',
+            'saveTimezone' => 'UTC',
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {
