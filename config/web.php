@@ -1,6 +1,8 @@
 <?php
 
+use kartik;
 use kartik\datecontrol\Module;
+use yii;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -15,6 +17,22 @@ $config = [
         '@npm' => '@vendor/npm-asset',
     ],
     'language' => 'es-ES',
+    'container' => [
+        'definitions' => [
+            yii\data\Pagination::className() => [
+                'pageSize' => 5,
+            ],
+            kartik\number\NumberControl::className() => [
+                'maskedInputOptions' => [
+                    'prefix' => '',
+                    'suffix' => ' €',
+                    'allowMinus' => false,
+                    'groupSeparator' => '.',
+                    'radixPoint' => ',',
+                ],
+            ],
+        ],
+    ],
     'components' => [
         'formatter' => [
             'timeZone' => 'Europe/Madrid',

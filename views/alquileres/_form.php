@@ -28,7 +28,16 @@ use kartik\datecontrol\DateControl;
         ]
     ]); ?>
 
-    <?= $form->field($model, 'devolucion')->textInput() ?>
+    <?= $form->field($model, 'devolucion')->widget(DateControl::className(), [
+        'type' => DateControl::FORMAT_DATETIME,
+        'readonly' => true,
+        'widgetOptions' => [
+            'pluginOptions' => [
+                'autoclose' => true,
+                'weekStart' => 1,
+            ]
+        ]
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

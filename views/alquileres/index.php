@@ -1,5 +1,6 @@
 <?php
 
+use kartik\datecontrol\DateControl;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -27,7 +28,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'socio.nombre',
             'pelicula.codigo',
             'pelicula.titulo',
-            'created_at:datetime',
+            [
+                'attribute' => 'created_at',
+                'filter' => DateControl::widget([
+                    'type' => DateControl::FORMAT_DATE,
+                    'model' => $searchModel,
+                    'attribute' => 'created_at',
+                    'readonly' => true,
+                    'widgetOptions' => [
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'weekStart' => 1,
+                        ]
+                    ],
+                ]),
+                'format' => 'datetime'
+            ],
             'devolucion:datetime',
 
             ['class' => 'yii\grid\ActionColumn'],
