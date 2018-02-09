@@ -158,7 +158,10 @@ class AlquileresController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AlquileresSearch();
+        $searchModel = new AlquileresSearch([
+            // 'desdeAlquilado' => date('Y-m-d'),
+            // 'hastaAlquilado' => date('Y-m-d'),
+        ]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

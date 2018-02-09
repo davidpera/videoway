@@ -10,6 +10,10 @@ use yii\data\ActiveDataProvider;
  */
 class AlquileresSearch extends Alquileres
 {
+    public $desdeAlquilado;
+
+    public $hastaAlquilado;
+
     // public $desdeAlquilado;
     //
     // public $hastaAlquilado;
@@ -26,6 +30,8 @@ class AlquileresSearch extends Alquileres
                 'devolucion',
                 'pelicula.titulo',
                 'socio.nombre',
+                'desdeAlquilado',
+                'hastaAlquilado',
             ], 'safe'],
         ];
     }
@@ -37,6 +43,8 @@ class AlquileresSearch extends Alquileres
             'pelicula.codigo',
             'socio.numero',
             'socio.nombre',
+            'desdeAlquilado',
+            'hastaAlquilado',
         ]);
     }
 
@@ -113,6 +121,12 @@ class AlquileresSearch extends Alquileres
             'ilike',
             'socios.nombre',
             $this->getAttribute('socio.nombre'),
+        ]);
+
+        $query->andFilterWhere([
+            'between',
+            'cast(created_at as date)',
+            $this->desdeAlquilado, $this->hastaAlquilado,
         ]);
 
         return $dataProvider;
