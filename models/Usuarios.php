@@ -15,6 +15,8 @@ use yii\web\IdentityInterface;
  */
 class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
 {
+    public $confirmar;
+
     /**
      * @inheritdoc
      */
@@ -23,14 +25,21 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         return 'usuarios';
     }
 
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['confirmar']);
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['nombre', 'password'], 'required'],
+            [['nombre', 'password', 'confirmar'], 'required'],
             [['nombre', 'password', 'email'], 'string', 'max' => 255],
+            [['email'], 'email'],
+            [['password'], 'compare', 'compareAttribute' => 'confirmar'],
             [['nombre'], 'unique'],
         ];
     }
@@ -43,8 +52,9 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'nombre' => 'Nombre',
-            'password' => 'Password',
+            'password' => 'Contraseña',
             'email' => 'Email',
+            'confirmar' => 'Confirmar contraseña',
         ];
     }
 
@@ -64,16 +74,39 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getAuthKey()
     {
-        // return $this->auth_key;
+        return $this->auth_key;
     }
 
     public function validateAuthKey($authKey)
     {
-        // return $this->getAuthKey() === $authKey;
+        return $this->getAuthKey() === $authKey;
     }
 
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+    public static function getPermitido()
+    {
+        return !Yii::$app->user->isGuest
+            && in_array(Yii::$app->user->identity->nombre, ['pepe', 'juan']);
+    }
+
+    // public function getExiste()
+    // {
+    //     return
+    // }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->auth_key = Yii::$app->security->generateRandomString();
+                $this->password = Yii::$app->security->generatePasswordHash($this->password);
+            }
+            return true;
+        }
+        return false;
     }
 }
