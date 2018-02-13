@@ -21,11 +21,12 @@ endif;
         endif ?>
         <h1><?= Html::encode($this->title) ?></h1>
         <?php $form = ActiveForm::begin([
+            'id' => 'gestionar-socio-form',
             'method' => 'get',
             'action' => ['alquileres/gestionar'],
         ]) ?>
 
-            <?= $form->field($gestionarSocioForm, 'numero') ?>
+            <?= $form->field($gestionarSocioForm, 'numero', ['enableAjaxValidation' => true]) ?>
             <div class="form-group">
                 <?= Html::submitButton('Buscar Socio', ['class' => 'btn btn-success']) ?>
             </div>
@@ -38,11 +39,12 @@ endif;
             <hr>
 
             <?php $form = ActiveForm::begin([
+                'id' => 'gestionar-pelicula-form',
                 'method' => 'get',
                 'action' => ['alquileres/gestionar'],
             ]) ?>
                 <?= Html::hiddenInput('numero', $gestionarPeliculaForm->numero)?>
-                <?= $form->field($gestionarPeliculaForm, 'codigo') ?>
+                <?= $form->field($gestionarPeliculaForm, 'codigo', ['enableAjaxValidation' => true]) ?>
                 <div class="form-group">
                     <?= Html::submitButton('Buscar Película', ['class' => 'btn btn-success']) ?>
                 </div>
