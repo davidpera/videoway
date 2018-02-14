@@ -131,6 +131,38 @@ class AlquileresController extends Controller
         return $this->render('gestionar', $data);
     }
 
+    public function actionGestionarAjax($numero = null, $codigo = null)
+    {
+        $gestionarPeliculaForm = new GestionarPeliculaForm([
+            'numero' => $numero,
+            'codigo' => $codigo,
+        ]);
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($gestionarPeliculaForm);
+        }
+
+        return $this->render('gestionar-ajax', [
+            'gestionarPeliculaForm' => $gestionarPeliculaForm,
+        ]);
+    }
+
+    public function actionPendientes($numero)
+    {
+        $socio = Socios::findOne(['numero' => $numero]);
+
+        if ($socio === null) {
+            return '';
+        }
+
+        $pendientes = $socio->getPendientes()->with('pelicula');
+
+        return $this->renderAjax('pendientes', [
+            'pendientes' => $pendientes,
+        ]);
+    }
+
     /**
      * devuelve un alquiler indicado por el id pasado por post.
      * @param  string   $numero         numero del socio para volver a el
