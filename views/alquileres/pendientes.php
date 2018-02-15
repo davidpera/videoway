@@ -1,15 +1,16 @@
 <?php
+
+use yii\helpers\Url;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\grid\ActionColumn;
-use yii\helpers\Url;
 use yii\helpers\Html;
 
 $urlPendientes = Url::to(['alquileres/pendientes']);
 $js = <<<EOT
-$('.grid-view form').submit(function (event) {
+$('.grid-view form').on('submit', function (event) {
     event.preventDefault();
-    var form = event.target;
+    var form = $(event.target); // $(this)
     var data = form.serialize();
     $.ajax({
         url: form.attr('action'),
@@ -18,7 +19,7 @@ $('.grid-view form').submit(function (event) {
         success: function (data) {
             if (data) {
                 $.ajax({
-                    url: $urlPendientes,
+                    url: '$urlPendientes',
                     type: 'GET',
                     data: {
                         numero: $('#gestionar-pelicula-form').yiiActiveForm('find', 'numero').value
@@ -27,15 +28,14 @@ $('.grid-view form').submit(function (event) {
                         $('#pendientes').html(data);
                         botonAlquilar();
                     }
-                })
+                });
             }
         }
-    })
+    });
 });
 EOT;
 $this->registerJs($js);
 ?>
-
 <?php if (!$pendientes->exists()): ?>
     <h3>No tiene alquileres pendientes</h3>
 <?php else: ?>
@@ -60,12 +60,12 @@ $this->registerJs($js);
                             ['alquileres/devolver-ajax'],
                             'post'
                         )
-                        .Html::hiddenInput('id', $model->id)
-                        .Html::submitButton(
+                        . Html::hiddenInput('id', $model->id)
+                        . Html::submitButton(
                             'Devolver',
                             ['class' => 'btn-xs btn-danger']
                         )
-                        .Html::endForm();
+                        . Html::endForm();
                     },
                 ],
             ],
