@@ -2,8 +2,38 @@
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\grid\ActionColumn;
+use yii\helpers\Url;
 use yii\helpers\Html;
 
+$urlPendientes = Url::to(['alquileres/pendientes']);
+$js = <<<EOT
+$('.grid-view form').submit(function (event) {
+    event.preventDefault();
+    var form = event.target;
+    var data = form.serialize();
+    $.ajax({
+        url: form.attr('action'),
+        type: 'POST',
+        data: data,
+        success: function (data) {
+            if (data) {
+                $.ajax({
+                    url: $urlPendientes,
+                    type: 'GET',
+                    data: {
+                        numero: $('#gestionar-pelicula-form').yiiActiveForm('find', 'numero').value
+                    },
+                    success: function (data) {
+                        $('#pendientes').html(data);
+                        botonAlquilar();
+                    }
+                })
+            }
+        }
+    })
+});
+EOT;
+$this->registerJs($js);
 ?>
 
 <?php if (!$pendientes->exists()): ?>
