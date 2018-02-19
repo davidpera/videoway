@@ -148,8 +148,8 @@ class SiteController extends Controller
         $resultado = Yii::$app->mailer->compose('prueba')
             ->setFrom(Yii::$app->params['adminEmail'])
             ->setTo('domingo.castaneda@iesdonana.org')
-            ->setSubject('Message subject')
-            // ->setTextBody('Plain text content')
+            ->setSubject('Ven a mi pagina o te parto las piernas')
+            ->setTextBody('Este es un texto que no va a existir en el correo')
             // ->setHtmlBody('<b>HTML content</b>')
             ->send();
         if (!$resultado) {
