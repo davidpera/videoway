@@ -68,14 +68,15 @@ $config = [
         ],
         'log' => $log,
         'db' => $db,
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'socios/view/<id:\d+>' => 'socios/view',
+                'socios/update/<id:\d+>' => 'socios/update',
             ],
         ],
-        */
     ],
     'params' => $params,
     'modules' => [
