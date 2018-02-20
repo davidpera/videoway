@@ -3,7 +3,10 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Url;
+use yii\imagine\Image;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "usuarios".
@@ -21,6 +24,12 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public $confirmar;
 
     /**
+     * Contiene la foto subida en el formulario.
+     * @var UploadedFile
+     */
+    public $foto;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -30,7 +39,10 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['confirmar']);
+        return array_merge(parent::attributes(), [
+            'confirmar',
+            'foto',
+        ]);
     }
 
     // public function scenarios()
@@ -47,7 +59,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-             [['nombre'], 'required'],
+             [['nombre', 'foto'], 'required'],
              [['password', 'confirmar'], 'required', 'on' => self::ESCENARIO_CREATE],
              [['nombre', 'password', 'confirmar', 'email'], 'string', 'max' => 255],
              [
@@ -60,7 +72,30 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
              [['nombre'], 'unique'],
              [['email'], 'default'],
              [['email'], 'email'],
+             [['foto'], 'file', 'extensions' => 'jpg'],
          ];
+    }
+
+    public function getRutaImagen()
+    {
+        $nombre = Yii::getAlias('@uploads/') . $model->id . '.jpg';
+        if (file_exists($nombre)) {
+            return Url::to('/uploads/') . $model->id . '.jpg';
+        }
+        return Url::to('/uploads/') . 'default.jpg';
+    }
+
+    public function upload()
+    {
+        if ($this->foto === null) {
+            return true;
+        }
+        $nombre = Yii::getAlias('@uploads/') . $this->id . '.jpg';
+        $res = $this->foto->saveAs($nombre);
+        if ($res) {
+            Image::thumbnail($nombre, 80, null)->save($nombre);
+        }
+        return $res;
     }
 
     /**

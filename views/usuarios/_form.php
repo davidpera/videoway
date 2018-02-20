@@ -20,6 +20,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'confirmar')->passwordInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'foto')->fileInput() ?>
+
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
