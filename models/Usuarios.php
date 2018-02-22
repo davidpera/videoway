@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\Url;
+use yii\helpers\Html;
 use yii\imagine\Image;
 use yii\web\IdentityInterface;
 use yii\web\UploadedFile;
@@ -59,7 +60,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-             [['nombre', 'foto'], 'required'],
+             [['nombre'], 'required'],
              [['password', 'confirmar'], 'required', 'on' => self::ESCENARIO_CREATE],
              [['nombre', 'password', 'confirmar', 'email'], 'string', 'max' => 255],
              [
@@ -83,6 +84,20 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             return Url::to('/uploads/') . $model->id . '.jpg';
         }
         return Url::to('/uploads/') . 'default.jpg';
+    }
+
+    public function email()
+    {
+        $resultado = Yii::$app->mailer->compose('verificacion')
+            ->setFrom(Yii::$app->params['adminEmail'])
+            ->setTo($this->email)
+            ->setSubject('Validación de tu cuenta de email')
+            ->setTextBody('A traves del enlace de este correo verificaras tu cuenta de email')
+            ->setHtmlBody(Html::a('verificar', Url::home('http') . 'usuarios/verificar?token_val=' . $this->token_val))
+            ->send();
+        if (!$resultado) {
+            //no se ha enviado correctamente
+        }
     }
 
     public function upload()
@@ -157,6 +172,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
         if (parent::beforeSave($insert)) {
             if ($insert) {
                 $this->auth_key = Yii::$app->security->generateRandomString();
+                $this->token_val = Yii::$app->security->generateRandomString();
                 if ($this->scenario === self::ESCENARIO_CREATE) {
                     $this->password = Yii::$app->security->generatePasswordHash($this->password);
                 }

@@ -32,9 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'nombre',
             'email:email',
+            'token_val',
             [
                 'attribute' => 'foto',
-                'value' => Url::to('/uploads/').$model->id.'.jpg',
+                'value' => 'https://www.dropbox.com/s/zd16nis9mbqw6fv/3.jpg?dl=1',
                 'format' => 'image',
             ]
         ],

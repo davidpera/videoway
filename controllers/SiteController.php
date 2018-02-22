@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\ContactForm;
 use app\models\LoginForm;
 use Yii;
+use Spatie\Dropbox\Exceptions\BadRequest;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -131,6 +132,24 @@ class SiteController extends Controller
         return $this->render('contact', [
             'model' => $model,
         ]);
+    }
+
+    public function actionDropbox()
+    {
+        $client = new \Spatie\Dropbox\Client(getenv('DROPBOX_TOKEN'));
+        try {
+            $client->delete('3.jpg');
+        } catch (BadRequest $e) {
+        }
+        $client->upload(
+            '3.jpg',
+            file_get_contents(Yii::getAlias('@uploads/3.jpg')),
+            'overwrite'
+        );
+        $res = $client->createSharedLinkWithSettings('3.jpg', [
+            'requested_visibility' => 'public'
+        ]);
+        return $res['url'];
     }
 
     /**

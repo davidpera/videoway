@@ -58,6 +58,17 @@ class UsuariosController extends \yii\web\Controller
         ]);
     }
 
+
+
+    public function actionVerificar()
+    {
+        $token = $_GET['token_val'];
+        $model = Usuarios::findOne(['token_val' => $token]);
+        $model->token_val = null;
+        $model->save();
+        return $this->goHome();
+    }
+
     public function actionCreate()
     {
         $model = new Usuarios(['scenario' => Usuarios::ESCENARIO_CREATE]);
@@ -70,6 +81,7 @@ class UsuariosController extends \yii\web\Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->foto = UploadedFile::getInstance($model, 'foto');
             if ($model->save() && $model->upload()) {
+                $model->email();
                 return $this->goHome();
             }
         }
