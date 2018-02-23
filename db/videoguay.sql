@@ -13,7 +13,17 @@ CREATE TABLE usuarios
   , auth_key    varchar(255)
   , token_val   varchar(255)    UNIQUE
   , created_at  timestamp(0)    NOT NULL DEFAULT localtimestamp
+  , avisado_at  timestamp(0)
 );
+
+/*DROP TABLE IF EXISTS usuarios_no_validados CASCADE;
+
+CREATE TABLE usuarios_no_validados
+(
+    id          bigserial       PRIMARY KEY REFERENCES usuarios (id)
+  , token_val   varchar(255)    UNIQUE
+  , avisado_at  timestamp(0)
+);*/
 
 CREATE INDEX idx_usuarios_email ON usuarios (email);
 /*CREATE INDEX idx_usuarios_token_val ON usuarios (token_val);*/
