@@ -60,13 +60,16 @@ class UsuariosController extends \yii\web\Controller
 
 
 
-    public function actionVerificar()
+    public function actionVerificar($token_val)
     {
-        $token = $_GET['token_val'];
-        $model = Usuarios::findOne(['token_val' => $token]);
+        $model = Usuarios::findOne(['token_val' => $token_val]);
+        if ($model === null) {
+            Yii::$app->session->setFlash('error', 'Usuario ya validado');
+        }
         $model->token_val = null;
         $model->save();
-        return $this->goHome();
+        Yii::$app->session->setFlash('success', 'Usuario validado. Logeese');
+        return $this->redirect(['site/login']);
     }
 
     public function actionCreate()

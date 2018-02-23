@@ -3,8 +3,8 @@
 namespace app\models;
 
 use Yii;
-use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\IdentityInterface;
 use yii\web\UploadedFile;
@@ -88,13 +88,13 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function email()
     {
-        $resultado = Yii::$app->mailer->compose('verificacion')
+        $resultado = Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['adminEmail'])
             ->setTo($this->email)
-            ->setSubject('Validación de tu cuenta de email')
-            ->setTextBody('A traves del enlace de este correo verificaras tu cuenta de email')
-            ->setHtmlBody(Html::a('verificar', Url::home('http') . 'usuarios/verificar?token_val=' . $this->token_val))
+            ->setSubject('Validación de tu cuenta de email')->setTextBody('A traves del enlace de este correo verificaras tu cuenta de email')
+            ->setHtmlBody(Html::a('verificar', Url::to(['usuarios/verificar', 'token_val' => $this->token_val], true)))
             ->send();
+        Yii::$app->session->setFlash('info', 'Se le ha enviado un correo');
         if (!$resultado) {
             //no se ha enviado correctamente
         }
