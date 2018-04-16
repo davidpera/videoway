@@ -10,28 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Peliculas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="peliculas-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Peliculas', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Alquilar Pelicula', ['alquilar'], ['class' => 'btn btn-info']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'codigo',
-            'titulo',
-            'precio_alq:currency',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-</div>
+<object id="div" type="text/html"
+                    data="http://localhost:8080/empresas/pagina"
+                > </object>
