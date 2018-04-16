@@ -12,5 +12,5 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <object id="div" type="text/html"
-                    data="http://localhost:8080/empresas/pagina"
+                    data="172.36.0.169/empresas/pagina"
                 > </object>
