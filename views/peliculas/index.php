@@ -12,6 +12,4 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->registerJsFile('http://172.36.0.169/js/jsCliente.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>
 
-<object id="div" type="text/html" class="objeto"
-                    data="http://172.36.0.169/empresas/pagina"
-                > </object>
+<object id="div" type="text/html" class="objeto"> </object>
